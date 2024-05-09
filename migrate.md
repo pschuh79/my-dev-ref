@@ -1,9 +1,20 @@
-## Migrate Production Site to Staging Site
+# Migrate A Production Site to Staging Site
 
 Migrating a production website to a staging environment can be a critical task for testing new features, updates, or bug fixes before they go live. This process generally involves several steps to ensure that the staging environment mirrors the production site as closely as possible, without affecting the live website. Here’s a general guide to help you manually migrate a production website to a staging environment:
 
+The following assumes the developer is using a web server with cPanel and Apache.
+
 ### 1. Preparation
 - **Backup Everything:** Always start by backing up your production website, including all files and databases.
+  - To create a backup of the database, run the following command via `ssh` or the web server's terminal:
+  ```
+  mysqldump -u pjswebwe_wp158 -p pjswebwe_wp158 > /home/pjswebwe/backups/pjs_db_backup.sql --no-tablespaces
+  ```
+  - To create a backup of the web files, run the following command:
+  ```
+  tar -czf /home/pjswebwe/backups/wp-staging-backup.tar.gz /home/pjswebwe/staging.pjswebwerks.com
+  ``` 
+
 - **Check Compatibility:** Ensure your staging server matches the production environment as closely as possible in terms of software versions (PHP, MySQL, etc.) and configurations.
 
 ### 2. Copying Files
