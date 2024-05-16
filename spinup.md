@@ -74,3 +74,35 @@ In this command:
 With this modification, the WordPress files should be extracted directly into `/home/pjswebwe/testing.pjswebwerks.com`.
 
 wp search-replace 'https://pjswebwerks.com' 'https://testing.pjswebwerks.com' --path=/home/pjswebwe/testing.pjswebwerks.com --precise --recurse-objects --all-tables --dry-run
+
+### What I should do to make a staging site for vision or any other site
+
+**This will need revision, I'm using actual commands. Need to make this more general**
+
+1. In cPanel, create a new domain
+
+    run:
+    ```shell
+    rsync -avz --progress /home/cages/visionproducts.us/ /home/cages/testing.visionproducts.us/
+    ```
+   - **Trailing Slash on Source:** Notice the trailing slash (`/`) at the end of `/home/pjswebwe/public_html/`. This is crucial because it tells `rsync` to copy the contents of the directory, rather than the directory itself.
+
+2. Create new database through cPanel interface. 
+3. Create new user, add user to the new database and apply appropriate permissions.
+
+4. Get backup of live database
+    ```
+    mysqldump -u cages_visionproducts -p cages_visionproducts > /home/cages/vision_db_backup.sql --no-tablespaces
+    ```
+5. Export datbase into new database
+    ```shell
+    mysql -u cages_vision_test -p cages_vision_test < /home/cages/vision_db_backup.sql
+    ```
+6. Run search and replace to update the url that will be used. This may need to be ran for other strings that need to be replaced. Remove `--dry-run` to make the changes permananent. 
+    ```
+    wp search-replace 'https://www.visionproducts.us' 'https://testing.visionproducts.us' --path=/home/cages/testing.visionproducts.us --recurse-objects --all-tables --dry-run
+    ```
+7. Update `wp-config.php`. Salts may also need to be updated
+8. DNS records may also need to be added or updated.
+
+**I had this problem with basic auth window showing up on the live site. Cancelling the window did not result in a 401 error and allowed the user to continue. I don't know why this showed on the live site. Perhaps I didn;t have something updated in the wp-config file**
