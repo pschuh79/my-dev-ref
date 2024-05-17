@@ -98,11 +98,11 @@ wp search-replace 'https://pjswebwerks.com' 'https://testing.pjswebwerks.com' --
     ```shell
     mysql -u cages_vision_test -p cages_vision_test < /home/cages/vision_db_backup.sql
     ```
-6. Run search and replace to update the url that will be used. This may need to be ran for other strings that need to be replaced. Remove `--dry-run` to make the changes permananent. 
+6. Update `wp-config.php`. Salts may also need to be updated
+7. Run search and replace to update the url that will be used. This may need to be ran for other strings that need to be replaced. Remove `--dry-run` to make the changes permananent. 
     ```
-    wp search-replace 'https://www.visionproducts.us' 'https://testing.visionproducts.us' --path=/home/cages/testing.visionproducts.us --recurse-objects --all-tables --dry-run
+   wp search-replace 'https://www.visionproducts.us' 'https://testing.visionproducts.us' --path=/home/cages/testing.visionproducts.us --recurse-objects --all-tables --dry-run
     ```
-7. Update `wp-config.php`. Salts may also need to be updated
 8. DNS records may also need to be added or updated.
 
-**I had this problem with basic auth window showing up on the live site. Cancelling the window did not result in a 401 error and allowed the user to continue. I don't know why this showed on the live site. Perhaps I didn;t have something updated in the wp-config file**
+**I had this problem with basic auth window showing up on the live site. Cancelling the window did not result in a 401 error and allowed the user to continue. I don't know why this showed on the live site. Perhaps I didn't have something updated in the wp-config file. Update - somehow the the url to the testing site made it into the live database. I'm not sure how that happened.**
