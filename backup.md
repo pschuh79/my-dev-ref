@@ -22,8 +22,10 @@ Create backup files for the database and the WordPress files. This can be done t
   ```
   - Example mysqldump command using a `.my.cnf` file:
   ```
-  mysqldump --defaults-file=~.my.cnf pjswebwe_wp158 --no-tablespaces
+  mysqldump --defaults-file=~/.my.cnf pjswebwe_wp158 --no-tablespaces > /home/user/db-backup.sql
   ```
+- See https://stackoverflow.com/questions/13484667/export-mysql-dump-from-command-line for more examples.
+
 - Alternatively, this can be done through phpMyAdmin by exporting the appropriate database.
 
 ### Backup The Web Files:
@@ -73,7 +75,7 @@ Once the desintation database is prepared, the previously backed up .`sql` file 
 
 
 ## 3. Importing the Web Files
-- **Via SSH/Rsync:** If you have SSH access, use Rsync to copy files from the live site directory to the staging site directory. 
+- **Via SSH/Rsync:** If you have SSH access, use Rsync to copy files from the live site directory to the staging site directory. Keep in mind that the entire web directory may not need to be synced, specific directories may be synced.
   ```bash
   rsync -avz --progress /path/to/live/ /path/to/staging/
   ```
@@ -81,8 +83,11 @@ Once the desintation database is prepared, the previously backed up .`sql` file 
   ```bash
   rsync -avz --progress --dry-run /path/to/web/directory/ /path/to/destination/directory/
   ```
-
-  - **Permissions and Ownership:** After running `rsync`, check the permissions and ownership of the copied files to ensure they match what's needed by your web server. You might need to adjust these with `chown` or `chmod` commands if the files aren't accessible or visible on your staging site.
+- Example:
+  ```
+  rsync -avz --progress --dry-run /home/user/source-directory/wp-content/ /home/user/destination-directory/wp-content/
+  ```
+- **Permissions and Ownership:** After running `rsync`, check the permissions and ownership of the copied files to ensure they match what's needed by your web server. You might need to adjust these with `chown` or `chmod` commands if the files aren't accessible or visible on your staging site.
 
 - **Via FTP/SFTP:** If you don’t have SSH access, use an FTP client to download all files from the live site and upload them to the staging directory.
 
